@@ -1,23 +1,45 @@
-package ru.learnup.garayev.spring.opersale;
+package ru.learnup.garayev.spring.opersale.module;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
-public class TheatrePremier {
+public class RealTheatrePremier {
 
     private String name; // Название
     private String memo; // Подробное описание
     private int ageFrom; // Возрастное ограничение
     private int countPlace; // Количество доступных мест
+    private int countFreePlace;
+    private LocalDateTime datePremier;
 
-    public TheatrePremier() {
-    }
-
-    public TheatrePremier(String name, String memo, int ageFrom, int countPlace) {
+    public RealTheatrePremier(String name, String memo, int ageFrom, int countPlace, LocalDateTime datePremier) {
         this.name = name;
         this.memo = memo;
         this.ageFrom = ageFrom;
         this.countPlace = countPlace;
+        this.countFreePlace = countPlace;
+        this.datePremier = datePremier;
+    }
+
+    public RealTheatrePremier() {
+    }
+
+    public int getCountFreePlace() {
+        return countFreePlace;
+    }
+
+    public void setCountFreePlace(int countFreePlace) {
+        this.countFreePlace = countFreePlace;
+    }
+
+    public LocalDateTime getDatePremier() {
+        return datePremier;
+    }
+
+    public void setDatePremier(LocalDateTime datePremier) {
+        this.datePremier = datePremier;
     }
 
     public String getName() {

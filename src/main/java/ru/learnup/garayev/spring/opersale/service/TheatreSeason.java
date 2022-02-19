@@ -1,6 +1,7 @@
-package ru.learnup.garayev.spring.opersale;
+package ru.learnup.garayev.spring.opersale.service;
 
 import org.springframework.stereotype.Component;
+import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,8 +32,38 @@ public class TheatreSeason {
         theatreSeason.put(realTheatrePremier.getDatePremier(), realTheatrePremier);
     }
 
+    public void addTheatreSeason(String name, String memo, int ageFrom, int countPlace, LocalDateTime datePremier) {
+        theatreSeason.put(datePremier, new RealTheatrePremier(name, memo, ageFrom, countPlace, datePremier));
+    }
+
+    public boolean buyTicket(RealTheatrePremier realTheatrePremier, int i){
+        if (realTheatrePremier.getCountFreePlace() >= i){
+            realTheatrePremier.setCountFreePlace(realTheatrePremier.getCountFreePlace() - i);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean returnTicket(RealTheatrePremier realTheatrePremier, int i){
+        if ((realTheatrePremier.getCountFreePlace() + i) <= realTheatrePremier.getCountPlace()){
+            realTheatrePremier.setCountFreePlace(realTheatrePremier.getCountFreePlace() + i);
+            return true;
+        }
+        return false;
+    }
+
     public void cancelTheatreSeason(RealTheatrePremier realTheatrePremier) {
         theatreSeason.remove(realTheatrePremier.getDatePremier());
+    }
+
+    public boolean replaceTheatreSeason(RealTheatrePremier realTheatrePremier, LocalDateTime newDate) {
+        if (theatreSeason.containsKey(newDate)) {
+            return false;
+        }
+        theatreSeason.remove(realTheatrePremier.getDatePremier());
+        realTheatrePremier.setDatePremier(newDate);
+        theatreSeason.put(realTheatrePremier.getDatePremier(), realTheatrePremier);
+        return true;
     }
 
     public RealTheatrePremier getRealTheatrePremier(LocalDateTime date){
