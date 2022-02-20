@@ -26,6 +26,11 @@ public class RealTheatrePremier {
     public RealTheatrePremier() {
     }
 
+    @Override
+    public String toString(){
+        return this.name;
+    }
+
     public int getCountFreePlace() {
         return countFreePlace;
     }
