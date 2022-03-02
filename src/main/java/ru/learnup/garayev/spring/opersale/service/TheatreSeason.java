@@ -18,14 +18,6 @@ public class TheatreSeason implements ApplicationContextAware {
     private SortedMap<LocalDateTime, RealTheatrePremier> theatreSeason = new TreeMap<>();
     private ApplicationContext ctx;
 
-    public TheatreSeason() {
-        this.name = "default";
-    }
-
-    public TheatreSeason(String name) {
-        this.name = name;
-    }
-
     public SortedMap<LocalDateTime, RealTheatrePremier> getTheatreSeason() {
         return theatreSeason;
     }
