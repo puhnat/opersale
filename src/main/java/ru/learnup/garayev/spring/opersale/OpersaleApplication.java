@@ -18,36 +18,46 @@ public class OpersaleApplication {
         TheatreSeason theatreSeason = ctx.getBean(TheatreSeason.class);
         theatreSeason.setName("Февраль 2022");
 
-        for (int i = 0; i < 3; i++) {
-            theatreSeason.addTheatreSeason("Премьера " + i, "[" + i + "] Премьера супер спектакля", 0, 200, LocalDateTime.of(2022, Month.FEBRUARY, 1+i, 18, 0, 0));
-        }
-
-        // Все премьеры
-        printAll(theatreSeason, "");
-
-        // Одна премьера
-        theatreSeason.infoAboutPremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0));
+        theatreSeason.listAllSeason();
         System.out.println();
+        theatreSeason.saveNewSeason("февраль 2022");
+        theatreSeason.saveNewSeason("март 2022");
+        theatreSeason.listAllSeason();
+        System.out.println();
+        theatreSeason.deleteSeason(2L);
+        theatreSeason.listAllSeason();
 
-        // Продажа билетов
-        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0)), 10);
-        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
-        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 3, 18, 0, 0)), 50);
-
-        // Все премьеры
-        printAll(theatreSeason, "После продажи билетов");
-
-        // Возврат билетов
-        theatreSeason.returnTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
-
-        // Все премьеры
-        printAll(theatreSeason, "После возврата билетов");
-
-        // Перенос премьеры
-        theatreSeason.replaceTheatreSeason(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), LocalDateTime.of(2022, Month.FEBRUARY, 15, 18, 0, 0));
-
-        // Все премьеры
-        printAll(theatreSeason, "После переноса премьеры");
+        // Код не на базе данных
+//        for (int i = 0; i < 3; i++) {
+//            theatreSeason.addTheatreSeason("Премьера " + i, "[" + i + "] Премьера супер спектакля", 0, 200, LocalDateTime.of(2022, Month.FEBRUARY, 1+i, 18, 0, 0));
+//        }
+//
+//        // Все премьеры
+//        printAll(theatreSeason, "");
+//
+//        // Одна премьера
+//        theatreSeason.infoAboutPremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0));
+//        System.out.println();
+//
+//        // Продажа билетов
+//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0)), 10);
+//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
+//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 3, 18, 0, 0)), 50);
+//
+//        // Все премьеры
+//        printAll(theatreSeason, "После продажи билетов");
+//
+//        // Возврат билетов
+//        theatreSeason.returnTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
+//
+//        // Все премьеры
+//        printAll(theatreSeason, "После возврата билетов");
+//
+//        // Перенос премьеры
+//        theatreSeason.replaceTheatreSeason(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), LocalDateTime.of(2022, Month.FEBRUARY, 15, 18, 0, 0));
+//
+//        // Все премьеры
+//        printAll(theatreSeason, "После переноса премьеры");
 
     }
 

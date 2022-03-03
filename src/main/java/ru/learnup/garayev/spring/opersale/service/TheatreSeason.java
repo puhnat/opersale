@@ -1,12 +1,15 @@
 package ru.learnup.garayev.spring.opersale.service;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import ru.learnup.garayev.spring.opersale.annotations.Loggable;
 import ru.learnup.garayev.spring.opersale.events.BuyTicketEvent;
 import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
+import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
+import ru.learnup.garayev.spring.opersale.repository.interfaces.ListSeasonRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,6 +20,25 @@ public class TheatreSeason implements ApplicationContextAware {
     private String name;
     private SortedMap<LocalDateTime, RealTheatrePremier> theatreSeason = new TreeMap<>();
     private ApplicationContext ctx;
+    private ListSeasonRepository repository;
+
+    @Autowired
+    public TheatreSeason(ListSeasonRepository repository){
+        this.repository = repository;
+    }
+
+    public void listAllSeason(){
+        //Collection<ListSeasonEntity> result = repository.getAll();
+        System.out.println(repository.findAll());
+    }
+
+    public void saveNewSeason(String name){
+        repository.save(new ListSeasonEntity(0L, name));
+    }
+
+    public void deleteSeason(Long id){
+        repository.deleteAllById(id);
+    }
 
     public SortedMap<LocalDateTime, RealTheatrePremier> getTheatreSeason() {
         return theatreSeason;
