@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @Table(name = "premiera")
 public class PremierEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "premiera_id_seq", sequenceName = "premiera_id_seq")
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -32,4 +32,22 @@ public class PremierEntity {
 
     @Column(name = "date_premier")
     private LocalDateTime datePremier;
+
+    @JoinColumn(name = "id_season")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity season;
+
+    @Column(name = "age_from")
+    private int ageFrom;
+
+    @Override
+    public String toString() {
+        //StringBuilder sb = new StringBuilder(String.format("%s (%d)", name, id));
+        return  "[" + season.getNameSeason() + "] " +
+                "[" + datePremier + "] " +
+                name +
+                " Общее кол-во мест : " + countPlace +
+                " Свободное кол-во мест : " + countFreePlace;
+        //return sb.toString();
+    }
 }

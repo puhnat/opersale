@@ -17,6 +17,7 @@ public class RealTheatrePremier {
     private int countPlace; // Количество доступных мест
     private int countFreePlace;
     private LocalDateTime datePremier;
+    private Season season;
 
     public RealTheatrePremier(String name, String memo, int ageFrom, int countPlace, LocalDateTime datePremier) {
         this.name = name;

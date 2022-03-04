@@ -3,6 +3,7 @@ package ru.learnup.garayev.spring.opersale;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
 import ru.learnup.garayev.spring.opersale.service.TheatreSeason;
 
 import java.time.LocalDateTime;
@@ -18,53 +19,50 @@ public class OpersaleApplication {
         TheatreSeason theatreSeason = ctx.getBean(TheatreSeason.class);
         theatreSeason.setName("Февраль 2022");
 
-        theatreSeason.listAllSeason();
-        System.out.println();
-        theatreSeason.saveNewSeason("февраль 2022");
-        theatreSeason.saveNewSeason("март 2022");
-        theatreSeason.listAllSeason();
-        System.out.println();
-        theatreSeason.deleteSeason(2L);
-        theatreSeason.listAllSeason();
+        // Инициализация данных в таблицах
+        theatreSeason.clearStart();
 
         // Код не на базе данных
-//        for (int i = 0; i < 3; i++) {
-//            theatreSeason.addTheatreSeason("Премьера " + i, "[" + i + "] Премьера супер спектакля", 0, 200, LocalDateTime.of(2022, Month.FEBRUARY, 1+i, 18, 0, 0));
-//        }
-//
-//        // Все премьеры
-//        printAll(theatreSeason, "");
-//
-//        // Одна премьера
-//        theatreSeason.infoAboutPremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0));
-//        System.out.println();
-//
-//        // Продажа билетов
-//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0)), 10);
-//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
-//        theatreSeason.buyTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 3, 18, 0, 0)), 50);
-//
-//        // Все премьеры
-//        printAll(theatreSeason, "После продажи билетов");
-//
-//        // Возврат билетов
-//        theatreSeason.returnTicket(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
-//
-//        // Все премьеры
-//        printAll(theatreSeason, "После возврата билетов");
-//
-//        // Перенос премьеры
-//        theatreSeason.replaceTheatreSeason(theatreSeason.getRealTheatrePremier(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), LocalDateTime.of(2022, Month.FEBRUARY, 15, 18, 0, 0));
-//
-//        // Все премьеры
-//        printAll(theatreSeason, "После переноса премьеры");
+        for (int i = 0; i < 3; i++) {
+            theatreSeason.addTheatreSeasonDB("Премьера " + i, "[" + i + "] Премьера супер спектакля", 0 + i * 10, 200, LocalDateTime.of(2022, Month.FEBRUARY, 1 + i, 18, 0, 0), new ListSeasonEntity(1L, "Февраль 2022", null));
+        }
 
+        // Все премьеры
+        printAll(theatreSeason, "");
+
+        // Одна премьера
+        theatreSeason.infoAboutPremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0));
+        System.out.println();
+
+        // Продажа билетов
+        theatreSeason.buyTicketDB(theatreSeason.getRealTheatrePremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 1, 18, 0, 0)), 10);
+        theatreSeason.buyTicketDB(theatreSeason.getRealTheatrePremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
+        theatreSeason.buyTicketDB(theatreSeason.getRealTheatrePremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 3, 18, 0, 0)), 50);
+
+        // Все премьеры
+        printAll(theatreSeason, "После продажи билетов");
+
+        // Возврат билетов
+        theatreSeason.returnTicketDB(theatreSeason.getRealTheatrePremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), 20);
+
+        // Все премьеры
+        printAll(theatreSeason, "После возврата билетов");
+
+        // Перенос премьеры
+        theatreSeason.replaceTheatreSeasonDB(theatreSeason.getRealTheatrePremierDB(LocalDateTime.of(2022, Month.FEBRUARY, 2, 18, 0, 0)), LocalDateTime.of(2022, Month.FEBRUARY, 15, 18, 0, 0));
+
+        // Все премьеры
+        printAll(theatreSeason, "После переноса премьеры");
+
+        System.out.println("Результаты отбора :");
+        theatreSeason.printAllLike("%0%");
     }
 
-    public static void printAll(TheatreSeason theatreSeason, String postFix){
+    public static void printAll(TheatreSeason theatreSeason, String postFix) {
         System.out.println(theatreSeason.getName() + " " + postFix);
-        theatreSeason.listAllPremier();
+        theatreSeason.listAllPremierDB();
         System.out.println();
     }
+
 
 }

@@ -6,11 +6,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import ru.learnup.garayev.spring.opersale.annotations.Loggable;
-import ru.learnup.garayev.spring.opersale.events.BuyTicketEvent;
 import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
-import ru.learnup.garayev.spring.opersale.repository.interfaces.ListSeasonRepository;
+import ru.learnup.garayev.spring.opersale.repository.entity.PremierEntity;
+import ru.learnup.garayev.spring.opersale.repository.interfaces.PremieraRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -20,25 +21,20 @@ public class TheatreSeason implements ApplicationContextAware {
     private String name;
     private SortedMap<LocalDateTime, RealTheatrePremier> theatreSeason = new TreeMap<>();
     private ApplicationContext ctx;
-    private ListSeasonRepository repository;
+    private PremieraRepository premieraRepository;
+    //private ListSeasonRepository seasonRepository;
+
 
     @Autowired
-    public TheatreSeason(ListSeasonRepository repository){
-        this.repository = repository;
+    public TheatreSeason(PremieraRepository repository) {
+        this.premieraRepository = repository;
     }
 
-    public void listAllSeason(){
+    public void listAllSeason() {
         //Collection<ListSeasonEntity> result = repository.getAll();
-        System.out.println(repository.findAll());
+        System.out.println(premieraRepository.findAll());
     }
 
-    public void saveNewSeason(String name){
-        repository.save(new ListSeasonEntity(0L, name));
-    }
-
-    public void deleteSeason(Long id){
-        repository.deleteAllById(id);
-    }
 
     public SortedMap<LocalDateTime, RealTheatrePremier> getTheatreSeason() {
         return theatreSeason;
@@ -65,10 +61,38 @@ public class TheatreSeason implements ApplicationContextAware {
     }
 
     @Loggable
+    public void addTheatreSeasonDB(String name, String memo, int ageFrom, int countPlace, LocalDateTime datePremier, ListSeasonEntity season) {
+        premieraRepository.save(new PremierEntity(null, name, memo, countPlace, countPlace, datePremier, season, ageFrom));
+    }
+
+    @Loggable
     public boolean buyTicket(RealTheatrePremier realTheatrePremier, int i) {
         if (realTheatrePremier.getCountFreePlace() >= i) {
             realTheatrePremier.setCountFreePlace(realTheatrePremier.getCountFreePlace() - i);
             //ctx.publishEvent(new BuyTicketEvent("Продажа билетов. Количество : " + i)); // отключили от spring boot
+            return true;
+        }
+        return false;
+    }
+
+    @Loggable
+    public boolean buyTicketDB(PremierEntity realTheatrePremier, int i) {
+        int countFreePlace = realTheatrePremier.getCountFreePlace();
+        if (countFreePlace >= i) {
+            realTheatrePremier.setCountFreePlace(countFreePlace - i);
+            premieraRepository.save(realTheatrePremier);
+            return true;
+        }
+        return false;
+    }
+
+    @Loggable
+    public boolean returnTicketDB(PremierEntity realTheatrePremier, int i) {
+        int countFreePlace = realTheatrePremier.getCountFreePlace();
+        int countPlace = realTheatrePremier.getCountPlace();
+        if ((countFreePlace + i) <= countPlace) {
+            realTheatrePremier.setCountFreePlace(countFreePlace + i);
+            premieraRepository.save(realTheatrePremier);
             return true;
         }
         return false;
@@ -86,6 +110,10 @@ public class TheatreSeason implements ApplicationContextAware {
         theatreSeason.remove(realTheatrePremier.getDatePremier());
     }
 
+    public void cancelTheatreSeasonDB(PremierEntity realTheatrePremier) {
+        premieraRepository.deleteAllById(realTheatrePremier.getId());
+    }
+
     @Loggable
     public boolean replaceTheatreSeason(RealTheatrePremier realTheatrePremier, LocalDateTime newDate) {
         if (theatreSeason.containsKey(newDate)) {
@@ -99,8 +127,21 @@ public class TheatreSeason implements ApplicationContextAware {
         return true;
     }
 
+    @Loggable
+    @Transactional
+    public boolean replaceTheatreSeasonDB(PremierEntity realTheatrePremier, LocalDateTime newDate) {
+        premieraRepository.deleteAllById(realTheatrePremier.getId());
+        realTheatrePremier.setDatePremier(newDate);
+        premieraRepository.save(realTheatrePremier);
+        return true;
+    }
+
     public RealTheatrePremier getRealTheatrePremier(LocalDateTime date) {
         return theatreSeason.get(date);
+    }
+
+    public PremierEntity getRealTheatrePremierDB(LocalDateTime date) {
+        return premieraRepository.findPremierEntityByDatePremier(date);
     }
 
     public void listAllPremier() {
@@ -110,8 +151,26 @@ public class TheatreSeason implements ApplicationContextAware {
         }
     }
 
+    public void clearStart() {
+        premieraRepository.deleteAll();
+    }
+
+    @Transactional
+    public void listAllPremierDB() {
+        premieraRepository.findAll().forEach(System.out::println);
+
+    }
+
     public void infoAboutPremier(LocalDateTime date) {
         RealTheatrePremier rp = theatreSeason.get(date);
+        System.out.println("[" + rp.getDatePremier() + "] " +
+                rp.getName() +
+                " Общее кол-во мест : " + rp.getCountPlace() +
+                " Свободное кол-во мест : " + rp.getCountFreePlace());
+    }
+
+    public void infoAboutPremierDB(LocalDateTime date) {
+        PremierEntity rp = premieraRepository.findPremierEntityByDatePremier(date);
         System.out.println("[" + rp.getDatePremier() + "] " +
                 rp.getName() +
                 " Общее кол-во мест : " + rp.getCountPlace() +
@@ -130,4 +189,12 @@ public class TheatreSeason implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         this.ctx = ctx;
     }
+
+    public void printAllLike(String pattern){
+        for (PremierEntity premierEntity: premieraRepository.findAllByNameLike(pattern)) {
+            System.out.println(premierEntity.toString());
+        }
+    }
+
+
 }

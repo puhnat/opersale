@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -14,11 +15,19 @@ import javax.persistence.*;
 public class ListSeasonEntity {
 
     @Id
-    //@Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "list_season_id_seq", sequenceName = "list_season_id_seq")
-    private long id;
+    private Long id_season;
 
     @Column(name = "name_season")
     private String nameSeason;
+
+    @OneToMany(mappedBy = "season", fetch = FetchType.EAGER)
+    private Collection<PremierEntity> premiers;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(String.format("%s (%d)\n%s", nameSeason, id_season, premiers));
+        return sb.toString();
+    }
 }
