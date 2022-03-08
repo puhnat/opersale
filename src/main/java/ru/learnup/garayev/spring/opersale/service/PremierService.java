@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-public class TheatreSeason implements ApplicationContextAware {
+public class PremierService implements ApplicationContextAware {
 
     private String name;
     private SortedMap<LocalDateTime, RealTheatrePremier> theatreSeason = new TreeMap<>();
@@ -26,7 +26,7 @@ public class TheatreSeason implements ApplicationContextAware {
 
 
     @Autowired
-    public TheatreSeason(PremieraRepository repository) {
+    public PremierService(PremieraRepository repository) {
         this.premieraRepository = repository;
     }
 
@@ -190,11 +190,12 @@ public class TheatreSeason implements ApplicationContextAware {
         this.ctx = ctx;
     }
 
-    public void printAllLike(String pattern){
-        for (PremierEntity premierEntity: premieraRepository.findAllByNameLike(pattern)) {
+    public void printAllLike(String pattern) {
+        for (PremierEntity premierEntity : premieraRepository.findAllByNameLike(pattern)) {
             System.out.println(premierEntity.toString());
         }
     }
 
 
 }
+

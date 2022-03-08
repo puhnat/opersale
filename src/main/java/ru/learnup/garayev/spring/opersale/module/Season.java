@@ -4,17 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Season {
-
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class RealTheatrePremier {
-
-        private Long id;
-        private String name; // Название сезона
-    }
-
-
+    private Long id;
+    private String name; // Название сезона
 }

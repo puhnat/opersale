@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
-import ru.learnup.garayev.spring.opersale.service.TheatreSeason;
+import ru.learnup.garayev.spring.opersale.service.PremierService;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -16,8 +16,9 @@ public class OpersaleApplication {
         final ConfigurableApplicationContext ctx = SpringApplication.run(OpersaleApplication.class, args);
 
         ctx.getBean(OpersaleApplication.class);
-        TheatreSeason theatreSeason = ctx.getBean(TheatreSeason.class);
+        PremierService theatreSeason = ctx.getBean(PremierService.class);
         theatreSeason.setName("Февраль 2022");
+
 
         // Инициализация данных в таблицах
         theatreSeason.clearStart();
@@ -58,7 +59,7 @@ public class OpersaleApplication {
         theatreSeason.printAllLike("%0%");
     }
 
-    public static void printAll(TheatreSeason theatreSeason, String postFix) {
+    public static void printAll(PremierService theatreSeason, String postFix) {
         System.out.println(theatreSeason.getName() + " " + postFix);
         theatreSeason.listAllPremierDB();
         System.out.println();

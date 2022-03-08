@@ -9,7 +9,7 @@
 //import java.util.Collection;
 //import java.util.List;
 //
-//import static ru.learnup.garayev.spring.opersale.repository.interfaces.Config.*;
+//import static ru.learnup.garayev.spring.opersale.config.Config.*;
 //
 ////@Repository
 //public class JdbcSeasonRepository implements SeasonRepository {

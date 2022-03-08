@@ -13,5 +13,5 @@ public interface PremieraRepository extends JpaRepository<PremierEntity, Long> {
 
     PremierEntity findPremierEntityByDatePremier(LocalDateTime datePremier);
 
-    List<PremierEntity> findAllByNameLike(String seasonPattern);
+    List<PremierEntity> findAllByNameLike(String premierPattern);
 }
