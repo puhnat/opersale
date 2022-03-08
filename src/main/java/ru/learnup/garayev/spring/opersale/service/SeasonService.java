@@ -1,5 +1,8 @@
 package ru.learnup.garayev.spring.opersale.service;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
@@ -8,6 +11,8 @@ import ru.learnup.garayev.spring.opersale.repository.interfaces.JpaSeasonReposit
 import java.util.List;
 
 @Service
+@Data
+@NoArgsConstructor
 public class SeasonService {
 
     private JpaSeasonRepository repository;
@@ -21,16 +26,16 @@ public class SeasonService {
         repository.findAll().forEach(System.out::println);
     }
 
-    public List<ListSeasonEntity> getByName(String name) {
-        return repository.findAllByNameLike(name);
+    public ListSeasonEntity getByName(String name) {
+        return repository.findAllByNameSeasonLike(name);
     }
 
-    public ListSeasonEntity saveNew(ListSeasonEntity authorEntity) {
-        return repository.save(authorEntity);
+    public ListSeasonEntity saveNew(ListSeasonEntity season) {
+        return repository.save(season);
     }
 
-    public void delete(ListSeasonEntity author) {
-        repository.delete(author);
+    public void delete(ListSeasonEntity season) {
+        repository.delete(season);
     }
 
     public void print(long id) {

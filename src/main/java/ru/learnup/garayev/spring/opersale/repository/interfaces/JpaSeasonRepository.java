@@ -12,7 +12,7 @@ public interface JpaSeasonRepository extends JpaRepository<ListSeasonEntity, Lon
 
     void deleteAllById(Long Id);
 
-    ListSeasonEntity findPremierEntityByDatePremier(LocalDateTime datePremier);
+    List<ListSeasonEntity> findAllById(Long id);
 
-    List<ListSeasonEntity> findAllByNameLike(String seasonPattern);
+    ListSeasonEntity findAllByNameSeasonLike(String seasonPattern);
 }
