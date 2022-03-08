@@ -1,4 +1,4 @@
-package ru.learnup.garayev.spring.opersale.repository.interfaces;
+package ru.learnup.garayev.spring.opersale.config;
 
 public interface Config {
     String DB_URL = "jdbc:postgresql:opersale";

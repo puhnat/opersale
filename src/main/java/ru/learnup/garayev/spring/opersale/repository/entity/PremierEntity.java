@@ -3,6 +3,7 @@ package ru.learnup.garayev.spring.opersale.repository.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.learnup.garayev.spring.opersale.module.Season;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class PremierEntity {
     @Override
     public String toString() {
         //StringBuilder sb = new StringBuilder(String.format("%s (%d)", name, id));
-        return  "[" + season.getNameSeason() + "] " +
+        return  "[" + season.getName() + "] " +
                 "[" + datePremier + "] " +
                 name +
                 " Общее кол-во мест : " + countPlace +

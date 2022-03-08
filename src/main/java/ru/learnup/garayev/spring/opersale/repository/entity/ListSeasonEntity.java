@@ -15,19 +15,20 @@ import java.util.Collection;
 public class ListSeasonEntity {
 
     @Id
+    @Column(name = "id_season")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "list_season_id_seq", sequenceName = "list_season_id_seq")
-    private Long id_season;
+    private Long id;
 
     @Column(name = "name_season")
-    private String nameSeason;
+    private String name;
 
     @OneToMany(mappedBy = "season", fetch = FetchType.EAGER)
     private Collection<PremierEntity> premiers;
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(String.format("%s (%d)\n%s", nameSeason, id_season, premiers));
+        StringBuilder sb = new StringBuilder(String.format("%s (%d)\n%s", name, id, premiers));
         return sb.toString();
     }
 }
