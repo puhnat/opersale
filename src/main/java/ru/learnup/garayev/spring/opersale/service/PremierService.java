@@ -10,8 +10,8 @@ import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
 import ru.learnup.garayev.spring.opersale.repository.entity.PremierEntity;
 import ru.learnup.garayev.spring.opersale.repository.interfaces.PremieraRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -61,8 +61,13 @@ public class PremierService implements ApplicationContextAware {
     }
 
     @Loggable
+    @Transactional
     public void addTheatreSeasonDB(String name, String memo, int ageFrom, int countPlace, LocalDateTime datePremier, ListSeasonEntity season) {
-        premieraRepository.save(new PremierEntity(null, name, memo, countPlace, countPlace, datePremier, season, ageFrom));
+        try {
+            premieraRepository.save(new PremierEntity(null, name, memo, countPlace, countPlace, datePremier, season, ageFrom));
+        } catch (Exception err) {
+            System.out.println(err);
+        }
     }
 
     @Loggable
@@ -76,23 +81,33 @@ public class PremierService implements ApplicationContextAware {
     }
 
     @Loggable
+    @Transactional
     public boolean buyTicketDB(PremierEntity realTheatrePremier, int i) {
         int countFreePlace = realTheatrePremier.getCountFreePlace();
         if (countFreePlace >= i) {
             realTheatrePremier.setCountFreePlace(countFreePlace - i);
-            premieraRepository.save(realTheatrePremier);
+            try {
+                premieraRepository.save(realTheatrePremier);
+            } catch (Exception err) {
+                System.out.println(err);
+            }
             return true;
         }
         return false;
     }
 
     @Loggable
+    @Transactional
     public boolean returnTicketDB(PremierEntity realTheatrePremier, int i) {
         int countFreePlace = realTheatrePremier.getCountFreePlace();
         int countPlace = realTheatrePremier.getCountPlace();
         if ((countFreePlace + i) <= countPlace) {
             realTheatrePremier.setCountFreePlace(countFreePlace + i);
-            premieraRepository.save(realTheatrePremier);
+            try {
+                premieraRepository.save(realTheatrePremier);
+            } catch (Exception err) {
+                System.out.println(err);
+            }
             return true;
         }
         return false;
@@ -100,18 +115,31 @@ public class PremierService implements ApplicationContextAware {
 
     public boolean returnTicket(RealTheatrePremier realTheatrePremier, int i) {
         if ((realTheatrePremier.getCountFreePlace() + i) <= realTheatrePremier.getCountPlace()) {
-            realTheatrePremier.setCountFreePlace(realTheatrePremier.getCountFreePlace() + i);
+            try {
+                realTheatrePremier.setCountFreePlace(realTheatrePremier.getCountFreePlace() + i);
+            } catch (Exception err) {
+                System.out.println(err);
+            }
             return true;
         }
         return false;
     }
 
     public void cancelTheatreSeason(RealTheatrePremier realTheatrePremier) {
-        theatreSeason.remove(realTheatrePremier.getDatePremier());
+        try {
+            theatreSeason.remove(realTheatrePremier.getDatePremier());
+        } catch (Exception err) {
+            System.out.println(err);
+        }
     }
 
+    @Transactional
     public void cancelTheatreSeasonDB(PremierEntity realTheatrePremier) {
-        premieraRepository.deleteAllById(realTheatrePremier.getId());
+        try {
+            premieraRepository.deleteAllById(realTheatrePremier.getId());
+        } catch (Exception err) {
+            System.out.println(err);
+        }
     }
 
     @Loggable
@@ -130,9 +158,13 @@ public class PremierService implements ApplicationContextAware {
     @Loggable
     @Transactional
     public boolean replaceTheatreSeasonDB(PremierEntity realTheatrePremier, LocalDateTime newDate) {
-        premieraRepository.deleteAllById(realTheatrePremier.getId());
-        realTheatrePremier.setDatePremier(newDate);
-        premieraRepository.save(realTheatrePremier);
+        try {
+            premieraRepository.deleteAllById(realTheatrePremier.getId());
+            realTheatrePremier.setDatePremier(newDate);
+            premieraRepository.save(realTheatrePremier);
+        } catch (Exception err) {
+            System.out.println(err);
+        }
         return true;
     }
 
@@ -140,6 +172,7 @@ public class PremierService implements ApplicationContextAware {
         return theatreSeason.get(date);
     }
 
+    @Transactional(readOnly = true)
     public PremierEntity getRealTheatrePremierDB(LocalDateTime date) {
         return premieraRepository.findPremierEntityByDatePremier(date);
     }
@@ -155,9 +188,13 @@ public class PremierService implements ApplicationContextAware {
         premieraRepository.deleteAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void listAllPremierDB() {
-        premieraRepository.findAll().forEach(System.out::println);
+        try {
+            premieraRepository.findAll().forEach(System.out::println);
+        } catch (Exception err) {
+            System.out.println(err);
+        }
 
     }
 
@@ -169,12 +206,17 @@ public class PremierService implements ApplicationContextAware {
                 " Свободное кол-во мест : " + rp.getCountFreePlace());
     }
 
+    @Transactional(readOnly = true)
     public void infoAboutPremierDB(LocalDateTime date) {
-        PremierEntity rp = premieraRepository.findPremierEntityByDatePremier(date);
+        try {
+            PremierEntity rp = premieraRepository.findPremierEntityByDatePremier(date);
         System.out.println("[" + rp.getDatePremier() + "] " +
                 rp.getName() +
                 " Общее кол-во мест : " + rp.getCountPlace() +
                 " Свободное кол-во мест : " + rp.getCountFreePlace());
+        } catch (Exception err) {
+            System.out.println(err);
+        }
     }
 
     public String getName() {
@@ -190,10 +232,16 @@ public class PremierService implements ApplicationContextAware {
         this.ctx = ctx;
     }
 
+    @Transactional(readOnly = true)
     public void printAllLike(String pattern) {
-        for (PremierEntity premierEntity : premieraRepository.findAllByNameLike(pattern)) {
-            System.out.println(premierEntity.toString());
+        try {
+            for (PremierEntity premierEntity : premieraRepository.findAllByNameLike(pattern)) {
+                System.out.println(premierEntity.toString());
+            }
+        } catch (Exception err) {
+            System.out.println(err);
         }
+
     }
 
 
