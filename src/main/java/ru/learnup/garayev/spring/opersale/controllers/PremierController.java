@@ -58,9 +58,20 @@ public class PremierController {
         premierService.update(mapper.toDomain(realTheatrePremierDto));
     }
 
+    @PutMapping("/pay/{id}")
+    public void payTicket(@PathVariable("id") Long id, @RequestBody Integer count) {
+        RealTheatrePremier realTheatrePremier = premierService.get(id);
+        premierService.buyTicket(realTheatrePremier, count);
+    }
+
+    @PutMapping("/return/{id}")
+    public void returnTicket(@PathVariable("id") Long id, @RequestBody Integer count) {
+        RealTheatrePremier realTheatrePremier = premierService.get(id);
+        premierService.returnTicket(realTheatrePremier, count);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         premierService.deleteById(id);
     }
-
 }
