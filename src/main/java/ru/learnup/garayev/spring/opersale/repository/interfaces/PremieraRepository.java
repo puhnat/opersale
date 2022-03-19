@@ -2,7 +2,6 @@ package ru.learnup.garayev.spring.opersale.repository.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.learnup.garayev.spring.opersale.module.Season;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
 import ru.learnup.garayev.spring.opersale.repository.entity.PremierEntity;
 

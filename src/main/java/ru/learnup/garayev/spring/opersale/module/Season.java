@@ -12,6 +12,4 @@ import java.util.List;
 public class Season {
     private Long id;
     private String name; // Название сезона
-    private List<RealTheatrePremier> premiers;
-
 }

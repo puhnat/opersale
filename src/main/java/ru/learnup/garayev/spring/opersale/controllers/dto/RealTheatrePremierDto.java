@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.learnup.garayev.spring.opersale.module.Season;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +28,7 @@ public class RealTheatrePremierDto {
     @JsonProperty
     private LocalDateTime datePremier;
     @JsonProperty
-    private String season;
+    private Season season;
 }
 
 

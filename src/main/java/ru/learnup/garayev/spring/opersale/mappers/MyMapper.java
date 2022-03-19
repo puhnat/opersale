@@ -22,11 +22,11 @@ public interface MyMapper {
     ListSeasonEntity toEntity(Season season);
     Season toDomain(ListSeasonEntity listSeasonEntity);
 
-    @Mappings({@Mapping(source = "realTheatrePremier.season.name", target = "season")})
+    //@Mappings({@Mapping(source = "realTheatrePremier.season.name", target = "season")})
     RealTheatrePremierDto toDto(RealTheatrePremier realTheatrePremier);
     default RealTheatrePremier toDomain(RealTheatrePremierDto theatrePremierDto){
         return new RealTheatrePremier(theatrePremierDto.getId(), theatrePremierDto.getName(), theatrePremierDto.getMemo(), theatrePremierDto.getAgeFrom(),
-                theatrePremierDto.getCountPlace(), theatrePremierDto.getCountFreePlace(), theatrePremierDto.getDatePremier(), new Season(null, theatrePremierDto.getSeason(), new ArrayList<>()));
+                theatrePremierDto.getCountPlace(), theatrePremierDto.getCountFreePlace(), theatrePremierDto.getDatePremier(), null);
     };
 
     PremierEntity toEntity(RealTheatrePremier premier);

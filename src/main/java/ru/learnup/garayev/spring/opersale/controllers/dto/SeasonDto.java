@@ -17,6 +17,4 @@ public class SeasonDto {
     private Long id;
     @JsonProperty
     private String name; // Название сезона
-    @JsonProperty
-    private List<RealTheatrePremierDto> premiers;
 }
