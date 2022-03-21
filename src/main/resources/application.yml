@@ -1,6 +1,16 @@
 spring:
+  mvc:
+    log-request-details=true:
+#  security:
+#    user:
+#      name: 'user'
+#      password: 'user123'
   datasource:
     url: 'jdbc:postgresql://localhost:5432/opersale'
     username: 'postgres'
     password: 'postgres'
     driver-class-name: 'org.postgresql.Driver'
+
+logging:
+  level:
+    org.springframework.web: debug

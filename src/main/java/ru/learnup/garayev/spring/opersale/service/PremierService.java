@@ -1,23 +1,17 @@
 package ru.learnup.garayev.spring.opersale.service;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import ru.learnup.garayev.spring.opersale.annotations.Loggable;
 import ru.learnup.garayev.spring.opersale.mappers.MyMapper;
-import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
-import ru.learnup.garayev.spring.opersale.module.Season;
+import ru.learnup.garayev.spring.opersale.model.RealTheatrePremier;
+import ru.learnup.garayev.spring.opersale.model.Season;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
 import ru.learnup.garayev.spring.opersale.repository.entity.PremierEntity;
 import ru.learnup.garayev.spring.opersale.repository.interfaces.JpaSeasonRepository;
 import ru.learnup.garayev.spring.opersale.repository.interfaces.PremieraRepository;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -48,6 +42,7 @@ public class PremierService {
         this.theatreSeason = theatreSeason;
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List<RealTheatrePremier> getAll() {
         return premieraRepository.findAll().stream()
                 .map(mapper::toDomain)
@@ -60,6 +55,7 @@ public class PremierService {
     }
 
     @Transactional
+    @Secured({"ROLE_ADMIN"})
     public void update(RealTheatrePremier premier) {
         final PremierEntity premiersEntity = premieraRepository.getById(premier.getId());
         premieraRepository.save(new PremierEntity(premiersEntity.getId(), premier.getName(), premier.getMemo(), premier.getCountPlace(),
@@ -68,6 +64,7 @@ public class PremierService {
                 premier.getAgeFrom()));
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public RealTheatrePremier get(Long id) {
         return mapper.toDomain(premieraRepository.getById(id));
     }
@@ -104,6 +101,7 @@ public class PremierService {
     }
 
     @Loggable
+    @Secured({"ROLE_USER"})
     public boolean buyTicketDB(PremierEntity realTheatrePremier, int i) {
         int countFreePlace = realTheatrePremier.getCountFreePlace();
         if (countFreePlace >= i) {
@@ -115,6 +113,7 @@ public class PremierService {
     }
 
     @Loggable
+    @Secured({"ROLE_USER"})
     public boolean returnTicketDB(PremierEntity realTheatrePremier, int i) {
         int countFreePlace = realTheatrePremier.getCountFreePlace();
         int countPlace = realTheatrePremier.getCountPlace();
@@ -138,6 +137,7 @@ public class PremierService {
         theatreSeason.remove(realTheatrePremier.getDatePremier());
     }
 
+    @Secured({"ROLE_ADMIN"})
     public void cancelTheatreSeasonDB(PremierEntity realTheatrePremier) {
         premieraRepository.deleteAllById(realTheatrePremier.getId());
     }
@@ -157,6 +157,7 @@ public class PremierService {
 
     @Loggable
     @Transactional
+    @Secured({"ROLE_ADMIN"})
     public boolean replaceTheatreSeasonDB(PremierEntity realTheatrePremier, LocalDateTime newDate) {
         premieraRepository.deleteAllById(realTheatrePremier.getId());
         realTheatrePremier.setDatePremier(newDate);
@@ -168,6 +169,7 @@ public class PremierService {
         return theatreSeason.get(date);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public PremierEntity getRealTheatrePremierDB(LocalDateTime date) {
         return premieraRepository.findPremierEntityByDatePremier(date);
     }
@@ -184,6 +186,7 @@ public class PremierService {
     }
 
     @Transactional
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void listAllPremierDB() {
         premieraRepository.findAll().forEach(System.out::println);
 
@@ -197,6 +200,7 @@ public class PremierService {
                 " Свободное кол-во мест : " + rp.getCountFreePlace());
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void infoAboutPremierDB(LocalDateTime date) {
         PremierEntity rp = premieraRepository.findPremierEntityByDatePremier(date);
         System.out.println("[" + rp.getDatePremier() + "] " +
@@ -219,12 +223,14 @@ public class PremierService {
         }
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List<RealTheatrePremier> listAllPremiersBySeason(Season season) {
         return premieraRepository.getAllBySeason_Id(season.getId()).stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
 
+    @Secured({"ROLE_ADMIN"})
     public void deleteById(Long id) {
         premieraRepository.deleteById(id);
     }

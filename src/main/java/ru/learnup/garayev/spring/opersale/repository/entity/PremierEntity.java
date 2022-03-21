@@ -3,7 +3,6 @@ package ru.learnup.garayev.spring.opersale.repository.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.learnup.garayev.spring.opersale.module.Season;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

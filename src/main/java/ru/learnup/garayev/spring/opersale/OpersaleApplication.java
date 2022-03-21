@@ -3,6 +3,7 @@ package ru.learnup.garayev.spring.opersale;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import ru.learnup.garayev.spring.opersale.repository.entity.ListSeasonEntity;
 import ru.learnup.garayev.spring.opersale.service.PremierService;
 

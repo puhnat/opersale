@@ -2,11 +2,9 @@ package ru.learnup.garayev.spring.opersale.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.learnup.garayev.spring.opersale.controllers.dto.RealTheatrePremierDto;
 import ru.learnup.garayev.spring.opersale.controllers.dto.SeasonDto;
 import ru.learnup.garayev.spring.opersale.mappers.MyMapper;
-import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
-import ru.learnup.garayev.spring.opersale.module.Season;
+import ru.learnup.garayev.spring.opersale.model.Season;
 import ru.learnup.garayev.spring.opersale.service.PremierService;
 import ru.learnup.garayev.spring.opersale.service.SeasonService;
 

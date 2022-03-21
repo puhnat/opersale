@@ -1,14 +1,11 @@
 package ru.learnup.garayev.spring.opersale.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.learnup.garayev.spring.opersale.controllers.dto.RealTheatrePremierDto;
-import ru.learnup.garayev.spring.opersale.controllers.dto.SeasonDto;
 import ru.learnup.garayev.spring.opersale.mappers.MyMapper;
-import ru.learnup.garayev.spring.opersale.module.RealTheatrePremier;
-import ru.learnup.garayev.spring.opersale.module.Season;
+import ru.learnup.garayev.spring.opersale.model.RealTheatrePremier;
 import ru.learnup.garayev.spring.opersale.service.PremierService;
 
 import java.util.Collection;
@@ -61,17 +58,18 @@ public class PremierController {
     @PutMapping("/pay/{id}")
     public void payTicket(@PathVariable("id") Long id, @RequestBody Integer count) {
         RealTheatrePremier realTheatrePremier = premierService.get(id);
-        premierService.buyTicket(realTheatrePremier, count);
+        premierService.buyTicketDB(mapper.toEntity(realTheatrePremier), count);
     }
 
     @PutMapping("/return/{id}")
     public void returnTicket(@PathVariable("id") Long id, @RequestBody Integer count) {
         RealTheatrePremier realTheatrePremier = premierService.get(id);
-        premierService.returnTicket(realTheatrePremier, count);
+        premierService.returnTicketDB(mapper.toEntity(realTheatrePremier), count);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        premierService.deleteById(id);
+        RealTheatrePremier realTheatrePremier = premierService.get(id);
+        premierService.cancelTheatreSeasonDB(mapper.toEntity(realTheatrePremier));
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.learnup.garayev.spring.opersale.module.Season;
+import ru.learnup.garayev.spring.opersale.model.Season;
 
 import java.time.LocalDateTime;
 
